@@ -308,8 +308,66 @@ waste per capita and coastal population.
 
 ### Exercise 5
 
-Remove this text, and add your answer for Exercise 8 here.
+To make the recreation, I first had to create a variable that reflects
+the proportion of a country’s population that lives on the coast.
 
 ``` r
-# insert code here
+plastic_waste_subset$coastal_pop_proportion <- plastic_waste_subset$coastal_pop/plastic_waste_subset$total_pop
 ```
+
+It took so long to figure out all of the little parts to this!! At
+first, I couldn’t figure out how to make the smooth curve not apply to
+every single continent’s data separately, so I first made a simpler
+version of the graph to figure out what the bare bones were:
+
+``` r
+ggplot(data = plastic_waste_subset, 
+       mapping = aes(x = coastal_pop_proportion, y = plastic_waste_per_cap)) +
+  geom_point() +
+  geom_smooth()
+```
+
+    ## `geom_smooth()` using method = 'loess' and formula = 'y ~ x'
+
+    ## Warning: Removed 10 rows containing non-finite values (`stat_smooth()`).
+
+    ## Warning: Removed 10 rows containing missing values (`geom_point()`).
+
+![](lab-02_files/figure-gfm/recreate-viz-simple-1.png)<!-- -->
+
+And then I realized that I had to put a separate mapping argument within
+the geom_point function to make sure that the color aesthetic parameter
+was only applying to the scatterplot!
+
+So here is the final code for the full graph, many iterations later:
+
+``` r
+ggplot(data = plastic_waste_subset, 
+       mapping = aes(x = coastal_pop_proportion, 
+                     y = plastic_waste_per_cap)) +
+  geom_point(mapping = aes(color=continent)) +
+  geom_smooth(color = "black") +
+  labs(title = "Plastic waste vs. coastal population proportion",
+       subtitle = "by continent",
+       x = "Coastal population proportion (Coastal/total population)", y = "Plastic waste per capita",
+       color = "Continent") +
+  scale_color_viridis_d() +
+  theme(panel.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(size = 0.25, linetype = 'solid',
+                                color = "grey"),
+        panel.grid.minor = element_line(size = 0.1, linetype = 'solid',
+                                color = "grey"),
+        axis.ticks = element_blank(),
+        legend.key = element_rect(fill = "white"))
+```
+
+    ## Warning: The `size` argument of `element_line()` is deprecated as of ggplot2 3.4.0.
+    ## ℹ Please use the `linewidth` argument instead.
+
+    ## `geom_smooth()` using method = 'loess' and formula = 'y ~ x'
+
+    ## Warning: Removed 10 rows containing non-finite values (`stat_smooth()`).
+
+    ## Warning: Removed 10 rows containing missing values (`geom_point()`).
+
+![](lab-02_files/figure-gfm/recreate-viz-1.png)<!-- -->
