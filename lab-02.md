@@ -371,3 +371,5 @@ ggplot(data = plastic_waste_subset,
     ## Warning: Removed 10 rows containing missing values (`geom_point()`).
 
 ![](lab-02_files/figure-gfm/recreate-viz-1.png)<!-- -->
+
+This was a very satisfying exercise!
