@@ -47,6 +47,14 @@ plastic_waste %>%
 It seems like this could have been an error, though??
 <https://tt.loopnews.com/content/swmcol-forbes-article-data-used-was-incorrect-and-dated>
 
+In order to be able to examine the data without this outlier in the
+future (if I want to) I will create a subset of the data without it:
+
+``` r
+plastic_waste_subset<- subset(plastic_waste, plastic_waste_per_cap < 3.5, 
+                              select=code:total_pop)
+```
+
 ------------------------------------------------------------------------
 
 *Reminder of the basic structure of data visualization with ggplot:*
@@ -168,45 +176,137 @@ is called “setting.”
 
 ### Exercise 3
 
-Remove this text, and add your answer for Exercise 3 here.
+Now, let’s try looking at the data in the form of box plots.
+
+``` r
+ggplot(data = plastic_waste, 
+       mapping = aes(x = continent, 
+                     y = plastic_waste_per_cap)) +
+  geom_boxplot()
+```
+
+    ## Warning: Removed 51 rows containing non-finite values (`stat_boxplot()`).
+
+![](lab-02_files/figure-gfm/plastic-waste-box-plots-1.png)<!-- -->
+
+#### 3.1
+
+As a comparison, here is the data graphed via violin plots.
+
+``` r
+ggplot(data = plastic_waste, 
+       mapping = aes(x = continent, 
+                     y = plastic_waste_per_cap)) +
+  geom_violin()
+```
+
+    ## Warning: Removed 51 rows containing non-finite values (`stat_ydensity()`).
+
+![](lab-02_files/figure-gfm/plastic-waste-violin-1.png)<!-- -->
+
+Unlike the box plots, the violin plots show the shape of each
+distribution (i.e., it’s easier to get a sense of how many cases
+correspond with each quantity of plastic waste). However, unlike the
+violin plots, the box plots clearly indicate where the interquartile
+range and median are.
 
 ### Exercise 4
 
-Remove this text, and add your answer for Exercise 4 here.
+#### 4.1
+
+Here is yet another way to look at the data: a scatterplot!
+
+This scatterplot depicts the relationship between plastic waste per
+capita and mismanaged plastic waste per capita.
 
 ``` r
-# insert code here
+ggplot(data = plastic_waste,
+       aes(x = plastic_waste_per_cap,
+       y = mismanaged_plastic_waste_per_cap)) +
+  geom_point()
 ```
+
+    ## Warning: Removed 51 rows containing missing values (`geom_point()`).
+
+![](lab-02_files/figure-gfm/plastic-waste-scatterplot-1.png)<!-- -->
+
+It seems that there is a slight positive correlation between the two
+variables.
+
+#### 4.2
+
+Adding in color differentiation by continent shows us that it seems like
+there is a stronger correlation between plastic waste per capita and
+mismanaged plastic waste per capita in North America, Asia, and Europe
+than there is in Africa and Oceania.
+
+``` r
+ggplot(data = plastic_waste,
+       aes(x = plastic_waste_per_cap,
+       y = mismanaged_plastic_waste_per_cap,
+       color = continent)) +
+  geom_point()
+```
+
+    ## Warning: Removed 51 rows containing missing values (`geom_point()`).
+
+![](lab-02_files/figure-gfm/plastic-waste-scatterplot-color-1.png)<!-- -->
+
+#### 4.3
+
+Here I am examining the relationship between plastic waste per capita
+and total population, as well as the relationship between plastic waste
+per capita and coastal population. I decided to look at the data both
+with and without the Trinidad and Tobago outlier because I was having a
+hard time getting a good sense of the data with the outlier included (as
+this clumps the data all in the bottom left corner).
+
+``` r
+ggplot(data = plastic_waste,
+       aes(x = plastic_waste_per_cap,
+       y = total_pop)) +
+  geom_point()
+```
+
+    ## Warning: Removed 61 rows containing missing values (`geom_point()`).
+
+![](lab-02_files/figure-gfm/plastic-waste-population-total-1.png)<!-- -->
+
+``` r
+ggplot(data = plastic_waste_subset,
+       aes(x = plastic_waste_per_cap,
+       y = total_pop)) +
+  geom_point()
+```
+
+    ## Warning: Removed 10 rows containing missing values (`geom_point()`).
+
+![](lab-02_files/figure-gfm/plastic-waste-population-total-subset-1.png)<!-- -->
+
+``` r
+ggplot(data = plastic_waste,
+       aes(x = plastic_waste_per_cap,
+       y = coastal_pop)) +
+  geom_point()
+```
+
+    ## Warning: Removed 51 rows containing missing values (`geom_point()`).
+
+![](lab-02_files/figure-gfm/plastic-waste-population-coastal-1.png)<!-- -->
+
+``` r
+ggplot(data = plastic_waste_subset,
+       aes(x = plastic_waste_per_cap,
+       y = coastal_pop)) +
+  geom_point()
+```
+
+![](lab-02_files/figure-gfm/plastic-waste-population-coastal-subset-1.png)<!-- -->
+
+It seems like there is a stronger linear association between plastic
+waste per capita and coastal population.
 
 ### Exercise 5
-
-Remove this text, and add your answer for Exercise 5 here.
-
-``` r
-# insert code here
-```
-
-### Exercise 6
-
-Remove this text, and add your answer for Exercise 6 here.
-
-``` r
-# insert code here
-```
-
-### Exercise 7
-
-Remove this text, and add your answer for Exercise 7 here.
-
-``` r
-# insert code here
-```
-
-``` r
-# insert code here
-```
-
-### Exercise 8
 
 Remove this text, and add your answer for Exercise 8 here.
 
